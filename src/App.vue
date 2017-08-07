@@ -3,17 +3,20 @@
     <img src="./assets/logo.png">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
-    <calendar></calendar>
+    <calendar :moment="moment"></calendar>
   </div>
 </template>
 
 <script>
 import calendar from 'components/calendar.vue'
+import moment from 'moment'
+moment.locale('fr')
 export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      moment
     }
   },
   components: {

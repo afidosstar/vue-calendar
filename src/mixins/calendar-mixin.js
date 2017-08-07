@@ -1,12 +1,10 @@
 import moment from 'moment'
-moment.locale('fr')
 export default {
     props: {
         moment: {
             type: Function,
-            'default': moment
-        },
-
+            'default': moment,
+        }
     },
     created() {
         this.currentYear = this.moment().year()
@@ -43,12 +41,26 @@ export default {
             let lastYear = this.moment(this.currentYear, 'YYYY')
             this.currentYear = lastYear.add(1, 'year').year()
         },
+        // determine les semaines du mois
         weekOf(n) {
             let yearWeeks = moment(this.firstMonthDay).isoWeek() + n;
             return moment(this.firstMonthDay).isoWeek(yearWeeks);
         },
-        isDayOfCurrentMonth(day) {
+        isDayOfCurrentMonth(day) { //detirmine si un jour appartient au jour du mois courrent
             return moment(day).isSameOrAfter(this.firstMonthDay) && moment(day).isSameOrBefore(this.lastDayOfMonth)
+        },
+        onSelect(moment_) {
+            this.setToCorrectMonth(moment_)
+            this.selected = moment_
+            this.$emit('selected', moment_)
+        },
+        weekDayOf(w, d) { //determer le jour de le semaine apartir de la semaine du numero de jour dans la semaine 
+            return this.weekOf(w).isoWeekday(d)
+        },
+        setToCorrectMonth(moment_) {
+            if (moment_.month() !== this.currentMoment.month()) {
+                this.currentMonth = moment_.format('MMMM');
+            }
         }
     },
     filters: {
@@ -68,8 +80,6 @@ export default {
         },
         lastDayOfMonth() {
             return this.currentMoment.clone().endOf('month').toDate();
-        }
-
-
+        },
     }
 }

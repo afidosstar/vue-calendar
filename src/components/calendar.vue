@@ -19,9 +19,21 @@
                 </thead>
                 <tbody>
                     <tr v-for="w in 6">
-                        <td v-for="d in 7" :class="{'v-out-day-month': !isDayOfCurrentMonth(weekOf(w-1).isoWeekday(d))}" :key="weekOf(w-1).isoWeekday(d).format('X')" >
-                            <span :data-date="weekOf(w-1).isoWeekday(d).format('YYYY-MM-DD dddd')">{{weekOf(w-1).isoWeekday(d).date()}}</span>
-                            </td>
+                        <td v-for="d in 7" 
+                        :class="{
+                            'v-out-day-month': !isDayOfCurrentMonth(weekDayOf(w-1,d)),
+                            'selected': weekDayOf(w-1,d).isSame(selected)
+                            }" 
+                        :key="weekDayOf(w-1,d).format('X')"
+
+                        >
+                            <span 
+                            :data-date="weekDayOf(w-1,d).format('YYYY-MM-DD')"
+                            @click="onSelect(weekDayOf(w-1,d))"
+                            >
+                                {{weekDayOf(w-1,d).date()}}
+                            </span>
+                        </td>
                     </tr>
                 </tbody>
             
@@ -36,7 +48,8 @@ export default {
     data () {
         return {
             currentMonth:'août',
-            currentYear: 2017
+            currentYear: 2017,
+            selected: null,
         }
     },
     mixins: [calendarMixin],
@@ -76,10 +89,30 @@ export default {
                 width: 100%;
                 .v-out-day-month{
                     opacity: 0.5;
+                    &.selected{
+                        color:rgba(255,255, 2555, 1);
+
+                    }
                 }
             }
             th {
-             
+             text-align: center;
+            }
+            td{
+                cursor: pointer;
+                span{
+                    display: inline-block;
+                    width: 20px;
+                    //height: 30px;
+                    border-radius: 50%;
+                    padding: 6px; 
+                    text-align: center;
+                }
+                &.selected span{
+                    background-color: red;
+                    color:rgba(255,255, 2555, 1);
+                    font-weight: 900
+                }
             }
         }
     }
