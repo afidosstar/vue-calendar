@@ -20,10 +20,13 @@
                 <tbody>
                     <tr v-for="w in 6">
                         <td v-for="d in 7" 
-                        :class="{
+                        :class="[{
                             'v-out-day-month': !isDayOfCurrentMonth(weekDayOf(w-1,d)),
-                            'selected': weekDayOf(w-1,d).isSame(selected)
-                            }" 
+                            'selected': weekDayOf(w-1,d).isSame(selected),
+                            'today': isToday(weekDayOf(w-1,d))
+                            },
+                            matchForEvent(weekDayOf(w-1,d))
+                            ]" 
                         :key="weekDayOf(w-1,d).format('X')"
 
                         >
@@ -73,7 +76,7 @@ export default {
                 &.vmonth{
                     .content{
                         display: inline-block;
-                        width: 96px;
+                        width: 76px;
                     }
                 }
             }
@@ -113,6 +116,17 @@ export default {
                     color:rgba(255,255, 2555, 1);
                     font-weight: 900
                 }
+            }
+        }
+        .matched{
+            background-color: yellow;
+            &.start{
+                border-bottom-left-radius: 50%;
+                border-top-left-radius: 50%;
+            }
+            &.end{
+                border-bottom-right-radius: 50%;
+                border-top-right-radius: 50%;
             }
         }
     }

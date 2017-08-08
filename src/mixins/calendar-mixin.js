@@ -4,6 +4,10 @@ export default {
         moment: {
             type: Function,
             'default': moment,
+        },
+        events: {
+            type: Array,
+            'default': () => []
         }
     },
     created() {
@@ -61,6 +65,27 @@ export default {
             if (moment_.month() !== this.currentMoment.month()) {
                 this.currentMonth = moment_.format('MMMM');
             }
+        },
+        matchForEvent(day) {
+            let clas = ''
+            this.events.forEach((event) => {
+                if (day.isSameOrAfter(moment(event.start).startOf('day')) && day.isSameOrBefore(moment(event.end).endOf('day'))) {
+                    clas += event.class || 'matched'
+                    if (this.isSameDate(day, event.start)) {
+                        clas += ' start'
+                    }
+                    if (this.isSameDate(day, event.end)) {
+                        clas += ' end'
+                    }
+                }
+            })
+            return clas;
+        },
+        isSameDate(date1, date2) {
+            return moment(date1).format('YYYY-MM-DD') === moment(date2).format('YYYY-MM-DD')
+        },
+        isToday(day) {
+            return day.format('YYYY-MM-DD') === moment(new Date()).format('YYYY-MM-DD')
         }
     },
     filters: {

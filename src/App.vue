@@ -3,7 +3,7 @@
     <img src="./assets/logo.png">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
-    <calendar :moment="moment"></calendar>
+    <calendar :events="events" :moment="moment"></calendar>
   </div>
 </template>
 
@@ -16,7 +16,17 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      moment
+      moment,
+      events: [
+        {
+          start: moment().subtract(2,'day').toDate(),
+          end: moment().add(2,'day').toDate(),
+        },
+        {
+          start: moment().add(4,'day').toDate(),
+          end: moment().add(8,'day').toDate(),
+        }
+      ]
     }
   },
   components: {
